@@ -15,78 +15,16 @@ from linebot.models import (
     ButtonsTemplate,
     ConfirmTemplate,
     MessageTemplateAction,
-    PostbackTemplateAction
+    PostbackTemplateAction,
+    FlexSendMessage
 )
-
+from urllib.parse import parse_qsl
+from . import func
 #取得settings.py中的LINE Bot憑證來進行Messaging API的驗證
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
- 
-def startbutton(event):
-    try:
-        message = TemplateSendMessage(
-            alt_text = '按鈕樣板',
-            template = ButtonsTemplate(
-                thumbnail_image_url='https://i.imgur.com/pRdaAmS.jpg',
-                title='歡迎使用托福linebot',
-                text='請選擇是否開始使用：',
-                actions=[
-                    MessageTemplateAction(
-                        label='start',
-                        text='start'
-                    ),
-                    MessageTemplateAction(
-                        label='stop',
-                        text='stop'
-                    )
-                ]
-            )
-        )
-        line_bot_api.reply_message(event.reply_token,message)
-    except:
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤!'))
-def backgroundbutton(event):
-    try:
-        '''message = TemplateSendMessage(
-            alt_text = '按鈕樣板',
-            template = ButtonsTemplate(
-                thumbnail_image_url='https://i.imgur.com/pRdaAmS.jpg',
-                title='背景調查',
-                text='請問您的英文背景：',
-                actions=[
-                    MessageTemplateAction(
-                        label='開始輸入',
-                        text='@start input'
-                    )
-                ]
-            )
-        )'''
-        Confirm_template = TemplateSendMessage(
-        alt_text='目錄 template',
-        template=ConfirmTemplate(
-            title='是否提供您的背景',
-            text='是否提供您的背景?\n我們可以搜尋到跟您背景類似的心得文',
-            actions=[                              
-                PostbackTemplateAction(
-                    label='Yes',
-                    text='Yes',
-                    data='action=buy&itemid=1'
-                ),
-                MessageTemplateAction(
-                    label='Skip',
-                    text='Skip'
-                )
-            ]
-        )
-        )
-        line_bot_api.reply_message(event.reply_token,Confirm_template)
-        
-        '''backgroundinfo = "請輸入您的背景(多益/學測/指考):\n範例一: 800/14/82\n範例二: 700//10\n請按照格式輸入，無分數可不用輸入，如範例二"
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=backgroundinfo))'''
-    except:
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤!'))
 
-
+global result
 
 @csrf_exempt
 def callback(request):
@@ -105,23 +43,47 @@ def callback(request):
         for event in events:
             
             if isinstance(event, MessageEvent):  # 如果有訊息事件
+                #print(event.message.text.split('\n'))
                 if event.message.text == "start":
-                    backgroundbutton(event)
+                    
+                    func.backgroundbutton(event)
                 elif event.message.text == "stop":
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text='goodbye'))
-                elif event.message.text == "@start input":
-                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的背景是否正確'))
-                else:
-                    startbutton(event)
+                elif event.message.text.split('\n')[0] == "mybackground":
+                    func.backgroundconfirmbutton(event)
+                    
+                elif event.message.text.split('\n')[0] == "mygoal":
+                    
+                    func.goalconfirmbutton(event)
+                
             if isinstance(event, PostbackEvent):
                 backdata = dict(parse_qsl(event.postback.data))
-                if backdata.get('action') == '第一隻喵':
-                    func.sendBack_cat01(event, backdata)
-                elif backdata.get('action') == '第二隻喵':
-                    func.sendBack_cat02(event,backdata)
-                elif backdata.get('action') == '第三隻喵':
-                    func.sendBack_cat03(event,backdata)
-               
+                #print(parse_qsl(event.postback.data))
+                backgroundinfo = "請輸入您的背景(多益/學測/指考):\n\n範例格式:\n1.\nmybackground\n800/14/82\n2.\nmybackground\n700//10\n\n請按照格式輸入，mybackground後要下一行，無分數可不用輸入，如範例二"
+                goalinfo = "請問你的目標總分為何? (70~120分)\n\n範例格式:\n1.\nmygoal\n100\n\n2.\nmygoal\n85"
+                
+                if backdata.get('action') == 'backgroundyes':
+                    func.backgroundmessage(event)
+                
+                #backgroundskip or backgroundtrue
+                elif event.postback.data[0:1] == "A":
+                    background = event.postback.data[2:]
+                    func.goalmessage(event,background)
+
+                elif event.postback.data[0:1] == "B":
+                    print("background:",event.postback.data)
+                elif backdata.get('action') == 'backgroundfalse':
+                    func.backgroundmessage(event)
+                elif backdata.get('action') == 'goaltrue':
+                    #article type
+                    func.typebutton(event)
+                elif backdata.get('action') == 'goalfalse':
+                    #goal
+                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text=goalinfo))
+                '''elif backdata.get('action') == 'selftaught':
+                    
+                elif backdata.get('action') == 'cram':'''
+                
         return HttpResponse()
     else:
         return HttpResponseBadRequest()
