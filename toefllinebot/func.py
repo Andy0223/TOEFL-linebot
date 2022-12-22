@@ -21,6 +21,14 @@ from linebot.models import (
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
+def storevalue(type,value,result):
+    if type=="background":
+        result['background'] = value
+    elif type=="goal":
+        result['goal'] = value
+    elif type=="type":
+        result['type'] = value
+    print("result:",result)
 
 def backgroundbutton(event):
     try:
@@ -178,7 +186,7 @@ def backgroundconfirmbutton(event):
         line_bot_api.reply_message(event.reply_token,Confirm_template)
     except:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤!'))
-def goalmessage(event,background):
+def goalmessage(event):
     try:
         flex_message = FlexSendMessage(
         alt_text = 'flex',
@@ -282,7 +290,7 @@ def goalconfirmbutton(event):
                 PostbackTemplateAction(
                     label='正確',
                     text='正確',
-                    data='action=goaltrue'
+                    data='B&' + score1
                 ),
                 PostbackTemplateAction(
                     label='錯誤',
@@ -308,12 +316,12 @@ def typebutton(event):
                     PostbackTemplateAction(
                         label='自學文',
                         text='自學文',
-                        data='action=selftaught'
+                        data='C&selftaught'
                     ),
                     PostbackTemplateAction(
                         label='補習文',
                         text='補習文',
-                        data='action=cram'
+                        data='C&cram'
                     ),
                 ]
             )
@@ -321,3 +329,844 @@ def typebutton(event):
         line_bot_api.reply_message(event.reply_token,message)
     except:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤!'))
+
+#subjectbutton
+
+
+#subjectmessage
+def subjectmessage(event):
+    try:
+        flex_message = FlexSendMessage(
+        alt_text = 'flex',
+        contents=
+            {
+                "type": "carousel",
+                "contents": [
+                    {
+                    "type": "bubble",
+                    "size": "micro",
+                    "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                        {
+                            "type": "text",
+                            "text": "Reading",
+                            "weight": "bold",
+                            "size": "sm",
+                            "wrap": True
+                        },
+                        {
+                            "type": "box",
+                            "layout": "vertical",
+                            "contents": [
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "1. ",
+                                    "margin": "none",
+                                    "size": "xs",
+                                    "flex": 0
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                                    "wrap": True,
+                                    "color": "#8c8c8c",
+                                    "size": "xs",
+                                    "flex": 5
+                                }
+                                ]
+                            },
+                            {
+                                "type": "separator",
+                                "margin": "10px"
+                            },
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "2. ",
+                                    "margin": "none",
+                                    "size": "xs",
+                                    "flex": 0
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                                    "wrap": True,
+                                    "color": "#8c8c8c",
+                                    "size": "xs",
+                                    "flex": 5
+                                }
+                                ],
+                                "offsetTop": "10px"
+                            },
+                            {
+                                "type": "separator",
+                                "margin": "10px"
+                            },
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "3. ",
+                                    "margin": "none",
+                                    "size": "xs",
+                                    "flex": 0
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                                    "wrap": True,
+                                    "color": "#8c8c8c",
+                                    "size": "xs",
+                                    "flex": 5
+                                }
+                                ],
+                                "offsetTop": "10px"
+                            }
+                            ]
+                        }
+                        ],
+                        "spacing": "sm",
+                        "paddingAll": "13px"
+                    }
+                    },
+                    {
+                    "type": "bubble",
+                    "size": "micro",
+                    "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                        {
+                            "type": "text",
+                            "text": "Listening",
+                            "weight": "bold",
+                            "size": "sm",
+                            "wrap": True
+                        },
+                        {
+                            "type": "box",
+                            "layout": "vertical",
+                            "contents": [
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "1. ",
+                                    "margin": "none",
+                                    "size": "xs",
+                                    "flex": 0
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                                    "wrap": True,
+                                    "color": "#8c8c8c",
+                                    "size": "xs",
+                                    "flex": 5
+                                }
+                                ]
+                            },
+                            {
+                                "type": "separator",
+                                "margin": "10px"
+                            },
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "2. ",
+                                    "margin": "none",
+                                    "size": "xs",
+                                    "flex": 0
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                                    "wrap": True,
+                                    "color": "#8c8c8c",
+                                    "size": "xs",
+                                    "flex": 5
+                                }
+                                ],
+                                "offsetTop": "10px"
+                            },
+                            {
+                                "type": "separator",
+                                "margin": "10px"
+                            },
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "3. ",
+                                    "margin": "none",
+                                    "size": "xs",
+                                    "flex": 0
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                                    "wrap": True,
+                                    "color": "#8c8c8c",
+                                    "size": "xs",
+                                    "flex": 5
+                                }
+                                ],
+                                "offsetTop": "10px"
+                            }
+                            ]
+                        }
+                        ],
+                        "spacing": "sm",
+                        "paddingAll": "13px"
+                    }
+                    },
+                    {
+                    "type": "bubble",
+                    "size": "micro",
+                    "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                        {
+                            "type": "text",
+                            "text": "Speaking",
+                            "weight": "bold",
+                            "size": "sm",
+                            "wrap": True
+                        },
+                        {
+                            "type": "box",
+                            "layout": "vertical",
+                            "contents": [
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "1. ",
+                                    "margin": "none",
+                                    "size": "xs",
+                                    "flex": 0
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                                    "wrap": True,
+                                    "color": "#8c8c8c",
+                                    "size": "xs",
+                                    "flex": 5
+                                }
+                                ]
+                            },
+                            {
+                                "type": "separator",
+                                "margin": "10px"
+                            },
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "2. ",
+                                    "margin": "none",
+                                    "size": "xs",
+                                    "flex": 0
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                                    "wrap": True,
+                                    "color": "#8c8c8c",
+                                    "size": "xs",
+                                    "flex": 5
+                                }
+                                ],
+                                "offsetTop": "10px"
+                            },
+                            {
+                                "type": "separator",
+                                "margin": "10px"
+                            },
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "3. ",
+                                    "margin": "none",
+                                    "size": "xs",
+                                    "flex": 0
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                                    "wrap": True,
+                                    "color": "#8c8c8c",
+                                    "size": "xs",
+                                    "flex": 5
+                                }
+                                ],
+                                "offsetTop": "10px"
+                            }
+                            ]
+                        }
+                        ],
+                        "spacing": "sm",
+                        "paddingAll": "13px"
+                    }
+                    },
+                    {
+                    "type": "bubble",
+                    "size": "micro",
+                    "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                        {
+                            "type": "text",
+                            "text": "Writing",
+                            "weight": "bold",
+                            "size": "sm",
+                            "wrap": True
+                        },
+                        {
+                            "type": "box",
+                            "layout": "vertical",
+                            "contents": [
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "1. ",
+                                    "margin": "none",
+                                    "size": "xs",
+                                    "flex": 0
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                                    "wrap": True,
+                                    "color": "#8c8c8c",
+                                    "size": "xs",
+                                    "flex": 5
+                                }
+                                ]
+                            },
+                            {
+                                "type": "separator",
+                                "margin": "10px"
+                            },
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "2. ",
+                                    "margin": "none",
+                                    "size": "xs",
+                                    "flex": 0
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                                    "wrap": True,
+                                    "color": "#8c8c8c",
+                                    "size": "xs",
+                                    "flex": 5
+                                }
+                                ],
+                                "offsetTop": "10px"
+                            },
+                            {
+                                "type": "separator",
+                                "margin": "10px"
+                            },
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "3. ",
+                                    "margin": "none",
+                                    "size": "xs",
+                                    "flex": 0
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                                    "wrap": True,
+                                    "color": "#8c8c8c",
+                                    "size": "xs",
+                                    "flex": 5
+                                }
+                                ],
+                                "offsetTop": "10px"
+                            }
+                            ]
+                        }
+                        ],
+                        "spacing": "sm",
+                        "paddingAll": "13px"
+                    }
+                    }
+                ]
+                }
+        
+        ),
+        line_bot_api.reply_message(event.reply_token, flex_message)
+    
+    
+    except:
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤!'))
+
+
+
+'''
+{
+  "type": "carousel",
+  "contents": [
+    {
+      "type": "bubble",
+      "size": "micro",
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "Reading",
+            "weight": "bold",
+            "size": "sm",
+            "wrap": true
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "baseline",
+                "spacing": "sm",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "1. ",
+                    "margin": "none",
+                    "size": "xs",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                    "wrap": true,
+                    "color": "#8c8c8c",
+                    "size": "xs",
+                    "flex": 5
+                  }
+                ]
+              },
+              {
+                "type": "separator",
+                "margin": "10px"
+              },
+              {
+                "type": "box",
+                "layout": "baseline",
+                "spacing": "sm",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "2. ",
+                    "margin": "none",
+                    "size": "xs",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                    "wrap": true,
+                    "color": "#8c8c8c",
+                    "size": "xs",
+                    "flex": 5
+                  }
+                ],
+                "offsetTop": "10px"
+              },
+              {
+                "type": "separator",
+                "margin": "10px"
+              },
+              {
+                "type": "box",
+                "layout": "baseline",
+                "spacing": "sm",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "3. ",
+                    "margin": "none",
+                    "size": "xs",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                    "wrap": true,
+                    "color": "#8c8c8c",
+                    "size": "xs",
+                    "flex": 5
+                  }
+                ],
+                "offsetTop": "10px"
+              }
+            ]
+          }
+        ],
+        "spacing": "sm",
+        "paddingAll": "13px"
+      }
+    },
+    {
+      "type": "bubble",
+      "size": "micro",
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "Listening",
+            "weight": "bold",
+            "size": "sm",
+            "wrap": true
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "baseline",
+                "spacing": "sm",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "1. ",
+                    "margin": "none",
+                    "size": "xs",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                    "wrap": true,
+                    "color": "#8c8c8c",
+                    "size": "xs",
+                    "flex": 5
+                  }
+                ]
+              },
+              {
+                "type": "separator",
+                "margin": "10px"
+              },
+              {
+                "type": "box",
+                "layout": "baseline",
+                "spacing": "sm",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "2. ",
+                    "margin": "none",
+                    "size": "xs",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                    "wrap": true,
+                    "color": "#8c8c8c",
+                    "size": "xs",
+                    "flex": 5
+                  }
+                ],
+                "offsetTop": "10px"
+              },
+              {
+                "type": "separator",
+                "margin": "10px"
+              },
+              {
+                "type": "box",
+                "layout": "baseline",
+                "spacing": "sm",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "3. ",
+                    "margin": "none",
+                    "size": "xs",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                    "wrap": true,
+                    "color": "#8c8c8c",
+                    "size": "xs",
+                    "flex": 5
+                  }
+                ],
+                "offsetTop": "10px"
+              }
+            ]
+          }
+        ],
+        "spacing": "sm",
+        "paddingAll": "13px"
+      }
+    },
+    {
+      "type": "bubble",
+      "size": "micro",
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "Speaking",
+            "weight": "bold",
+            "size": "sm",
+            "wrap": true
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "baseline",
+                "spacing": "sm",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "1. ",
+                    "margin": "none",
+                    "size": "xs",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                    "wrap": true,
+                    "color": "#8c8c8c",
+                    "size": "xs",
+                    "flex": 5
+                  }
+                ]
+              },
+              {
+                "type": "separator",
+                "margin": "10px"
+              },
+              {
+                "type": "box",
+                "layout": "baseline",
+                "spacing": "sm",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "2. ",
+                    "margin": "none",
+                    "size": "xs",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                    "wrap": true,
+                    "color": "#8c8c8c",
+                    "size": "xs",
+                    "flex": 5
+                  }
+                ],
+                "offsetTop": "10px"
+              },
+              {
+                "type": "separator",
+                "margin": "10px"
+              },
+              {
+                "type": "box",
+                "layout": "baseline",
+                "spacing": "sm",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "3. ",
+                    "margin": "none",
+                    "size": "xs",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                    "wrap": true,
+                    "color": "#8c8c8c",
+                    "size": "xs",
+                    "flex": 5
+                  }
+                ],
+                "offsetTop": "10px"
+              }
+            ]
+          }
+        ],
+        "spacing": "sm",
+        "paddingAll": "13px"
+      }
+    },
+    {
+      "type": "bubble",
+      "size": "micro",
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "Writing",
+            "weight": "bold",
+            "size": "sm",
+            "wrap": true
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "baseline",
+                "spacing": "sm",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "1. ",
+                    "margin": "none",
+                    "size": "xs",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                    "wrap": true,
+                    "color": "#8c8c8c",
+                    "size": "xs",
+                    "flex": 5
+                  }
+                ]
+              },
+              {
+                "type": "separator",
+                "margin": "10px"
+              },
+              {
+                "type": "box",
+                "layout": "baseline",
+                "spacing": "sm",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "2. ",
+                    "margin": "none",
+                    "size": "xs",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                    "wrap": true,
+                    "color": "#8c8c8c",
+                    "size": "xs",
+                    "flex": 5
+                  }
+                ],
+                "offsetTop": "10px"
+              },
+              {
+                "type": "separator",
+                "margin": "10px"
+              },
+              {
+                "type": "box",
+                "layout": "baseline",
+                "spacing": "sm",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "3. ",
+                    "margin": "none",
+                    "size": "xs",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
+                    "wrap": true,
+                    "color": "#8c8c8c",
+                    "size": "xs",
+                    "flex": 5
+                  }
+                ],
+                "offsetTop": "10px"
+              }
+            ]
+          }
+        ],
+        "spacing": "sm",
+        "paddingAll": "13px"
+      }
+    }
+  ]
+}
+
+'''

@@ -24,12 +24,13 @@ from . import func
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
-global result
+result = {}
 
 @csrf_exempt
 def callback(request):
  
     if request.method == 'POST':
+        
         signature = request.META['HTTP_X_LINE_SIGNATURE']
         body = request.body.decode('utf-8')
  
@@ -52,6 +53,7 @@ def callback(request):
                 elif event.message.text.split('\n')[0] == "mybackground":
                     func.backgroundconfirmbutton(event)
                     
+                    
                 elif event.message.text.split('\n')[0] == "mygoal":
                     
                     func.goalconfirmbutton(event)
@@ -65,24 +67,31 @@ def callback(request):
                 if backdata.get('action') == 'backgroundyes':
                     func.backgroundmessage(event)
                 
+                elif backdata.get('action') == 'backgroundfalse':
+                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='請再輸入一次'))
+                    func.backgroundmessage(event)
+
                 #backgroundskip or backgroundtrue
                 elif event.postback.data[0:1] == "A":
                     background = event.postback.data[2:]
-                    func.goalmessage(event,background)
+                    func.storevalue("background",background,result)
+                    func.goalmessage(event)
 
+                #goaltrue
                 elif event.postback.data[0:1] == "B":
-                    print("background:",event.postback.data)
-                elif backdata.get('action') == 'backgroundfalse':
-                    func.backgroundmessage(event)
-                elif backdata.get('action') == 'goaltrue':
-                    #article type
+                    goal = event.postback.data[2:]
+                    func.storevalue("goal",goal,result)
                     func.typebutton(event)
+                
                 elif backdata.get('action') == 'goalfalse':
                     #goal
-                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text=goalinfo))
-                '''elif backdata.get('action') == 'selftaught':
-                    
-                elif backdata.get('action') == 'cram':'''
+                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='請再輸入一次'))
+                    func.goalmessage(event)
+                elif event.postback.data[0:1] == "C":
+                    type = event.postback.data[2:]
+                    func.storevalue("type",type,result)
+                    func.subjectmessage(event)
+                
                 
         return HttpResponse()
     else:
