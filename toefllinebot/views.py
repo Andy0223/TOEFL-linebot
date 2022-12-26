@@ -20,6 +20,7 @@ from linebot.models import (
 )
 from urllib.parse import parse_qsl
 from . import func
+import numpy as np
 #取得settings.py中的LINE Bot憑證來進行Messaging API的驗證
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
@@ -51,13 +52,41 @@ def callback(request):
                 elif event.message.text == "stop":
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text='goodbye'))
                 elif event.message.text.split('\n')[0] == "mybackground":
-                    func.backgroundconfirmbutton(event)
+                    score = event.message.text.split('\n')[1].split('/')
+                    if score[0]=='':
+                        tscore=''
+                    else:
+                        tscore=int(score[0])
+                    if score[1]=='':
+                        sscore=''
+                    else:
+                        sscore=int(score[1])
+                    if score[2]=='':
+                        jscore=''
+                    else:
+                        jscore=int(score[2])
+                    if tscore!='' and (tscore>990 or tscore<0 or type(tscore)!=int) : 
+                        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='多益成績範圍錯誤，請再輸入一次'))
+                        #func.backgroundmessage_rangewrong(event)
+                    elif sscore!='' and (sscore>15 or sscore<0 or type(sscore)!=int) :
+                        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='學測成績範圍錯誤，請再輸入一次'))
+                        #func.backgroundmessage_rangewrong(event)
+                    elif jscore!='' and (jscore>100 or jscore<0):
+                        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='指考成績範圍錯誤，請再輸入一次'))
+                        #func.backgroundmessage_rangewrong(event)
+                    else:
+                        func.backgroundconfirmbutton(event)
                     
                     
                 elif event.message.text.split('\n')[0] == "mygoal":
+                    if (int(event.message.text.split('\n')[1])>120) or (int(event.message.text.split('\n')[1])<70):
+                        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='範圍錯誤，請再輸入一次'))
+                        func.goalmessage(event)
+                    else:
+                        func.goalconfirmbutton(event)
+                '''else:
                     
-                    func.goalconfirmbutton(event)
-                
+                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤!'))'''
             if isinstance(event, PostbackEvent):
                 backdata = dict(parse_qsl(event.postback.data))
                 #print(parse_qsl(event.postback.data))
@@ -88,8 +117,8 @@ def callback(request):
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text='請再輸入一次'))
                     func.goalmessage(event)
                 elif event.postback.data[0:1] == "C":
-                    type = event.postback.data[2:]
-                    func.storevalue("type",type,result)
+                    artype = event.postback.data[2:]
+                    func.storevalue("type",artype,result)
                     func.subjectmessage(event)
                 
                 

@@ -159,11 +159,132 @@ def backgroundmessage(event):
     
     except:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤!'))
+#background score in wrong range
+def backgroundmessage_rangewrong(event):
+    try:
+        flex_message = FlexSendMessage(
+        alt_text = 'flex',
+        contents=
+            {
+                "type": "bubble",
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                    {
+                        "type": "box",
+                        "layout": "baseline",
+                        "spacing": "sm",
+                        "contents": [
+                        {
+                            "type": "text",
+                            "text": "範圍錯誤，請再輸入一次",
+                            "wrap": True,
+                            "size": "sm",
+                            "flex": 1
+                        },
+                        ]
+                    },
+
+
+                    {
+                        "type": "text",
+                        "text": "請輸入您的背景(多益/學測/指考):",
+                        "weight": "bold",
+                        "size": "md"
+                    },
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "margin": "lg",
+                        "spacing": "sm",
+                        "contents": [
+                        {
+                            "type": "box",
+                            "layout": "baseline",
+                            "spacing": "sm",
+                            "contents": [
+                            {
+                                "type": "text",
+                                "text": "範例一",
+                                "color": "#aaaaaa",
+                                "size": "sm",
+                                "flex": 1
+                            },
+                            {
+                                "type": "text",
+                                "text": "mybackground\n800/14/82",
+                                "wrap": True,
+                                "color": "#666666",
+                                "size": "sm",
+                                "flex": 5
+                            }
+                            ]
+                        },
+                        {
+                            "type": "box",
+                            "layout": "baseline",
+                            "spacing": "sm",
+                            "contents": [
+                            {
+                                "type": "text",
+                                "text": "範例二",
+                                "color": "#aaaaaa",
+                                "size": "sm",
+                                "flex": 1
+                            },
+                            {
+                                "type": "text",
+                                "text": "mybackground\n700//10",
+                                "wrap": True,
+                                "color": "#666666",
+                                "size": "sm",
+                                "flex": 5
+                            }
+                            ]
+                        }
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "margin": "lg",
+                        "spacing": "sm",
+                        "contents": [
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "mybackground後要下一行，分數之間用/隔開，無分數可不用輸入，如範例二",
+                                    "wrap": True,
+                                    "size": "sm",
+                                    "flex": 1
+                                },
+                                ]
+                            }
+                        ]
+                        
+                    },
+                    ]
+                }
+            }
+        
+        ),
+        line_bot_api.reply_message(event.reply_token, flex_message)
+    
+    
+    except:
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤!'))
+
+
 def backgroundconfirmbutton(event):
     try:
         score = event.message.text.split('\n')[1].split('/')
         #print(event.message.text)
-        backgroundconfirmtext = 'so, your background is:\n'+"多益:"+score[0]+"分/學測:"+score[1]+"級/指考:"+score[2]+"分\n"+"是否正確:"
+        backgroundconfirmtext = '您的英文背景如下:\n'+"多益:"+score[0]+"分\n學測:"+score[1]+"級\n指考:"+score[2]+"分\n"+"是否正確:"
         Confirm_template = TemplateSendMessage(
         alt_text='目錄 template',
         template=ConfirmTemplate(
@@ -280,7 +401,7 @@ def goalmessage(event):
 def goalconfirmbutton(event):
     try:
         score1 = event.message.text.split('\n')[1]
-        goalconfirmtext = 'so, your goal is:\n'+score1+"\n"+"是否正確:"
+        goalconfirmtext = '所以您的目標總分是:\n'+score1+"\n"+"是否正確:"
         Confirm_template = TemplateSendMessage(
         alt_text='目錄 template',
         template=ConfirmTemplate(
@@ -332,423 +453,431 @@ def typebutton(event):
 
 #subjectbutton
 
+#get content from csv file function
+#def getcontent(result):
 
 #subjectmessage
 def subjectmessage(event):
+    #getcontent(result) -> 
+    #1: ['reading','listening','speaking','writing]
+    #2: ...
+    #[ [#1], [#2], [#3] ]
+    #article = getcontent(result)
+    article = [ ['11','22','33','44'], ['11','22','33','44'],['11','22','33','44']]
+
     try:
         flex_message = FlexSendMessage(
         alt_text = 'flex',
         contents=
             {
-                "type": "carousel",
-                "contents": [
-                    {
-                    "type": "bubble",
-                    "size": "micro",
-                    "body": {
+              "type": "carousel",
+              "contents": [
+                {
+                  "type": "bubble",
+                  "size": "mega",
+                  "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "Reading",
+                        "weight": "bold",
+                        "size": "sm",
+                        "wrap": True
+                      },
+                      {
                         "type": "box",
                         "layout": "vertical",
                         "contents": [
-                        {
-                            "type": "text",
-                            "text": "Reading",
-                            "weight": "bold",
-                            "size": "sm",
-                            "wrap": True
-                        },
-                        {
+                          {
                             "type": "box",
-                            "layout": "vertical",
+                            "layout": "baseline",
+                            "spacing": "sm",
                             "contents": [
-                            {
-                                "type": "box",
-                                "layout": "baseline",
-                                "spacing": "sm",
-                                "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "1. ",
-                                    "margin": "none",
-                                    "size": "xs",
-                                    "flex": 0
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
-                                    "wrap": True,
-                                    "color": "#8c8c8c",
-                                    "size": "xs",
-                                    "flex": 5
-                                }
-                                ]
-                            },
-                            {
-                                "type": "separator",
-                                "margin": "10px"
-                            },
-                            {
-                                "type": "box",
-                                "layout": "baseline",
-                                "spacing": "sm",
-                                "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "2. ",
-                                    "margin": "none",
-                                    "size": "xs",
-                                    "flex": 0
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
-                                    "wrap": True,
-                                    "color": "#8c8c8c",
-                                    "size": "xs",
-                                    "flex": 5
-                                }
-                                ],
-                                "offsetTop": "10px"
-                            },
-                            {
-                                "type": "separator",
-                                "margin": "10px"
-                            },
-                            {
-                                "type": "box",
-                                "layout": "baseline",
-                                "spacing": "sm",
-                                "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "3. ",
-                                    "margin": "none",
-                                    "size": "xs",
-                                    "flex": 0
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
-                                    "wrap": True,
-                                    "color": "#8c8c8c",
-                                    "size": "xs",
-                                    "flex": 5
-                                }
-                                ],
-                                "offsetTop": "10px"
-                            }
-                            ]
-                        }
-                        ],
-                        "spacing": "sm",
-                        "paddingAll": "13px"
-                    }
-                    },
-                    {
-                    "type": "bubble",
-                    "size": "micro",
-                    "body": {
+                              {
+                                "type": "text",
+                                "text": "1. ",
+                                "margin": "none",
+                                "size": "xs",
+                                "flex": 0
+                              },
+                              {
+                                "type": "text",
+                                "wrap": True,
+                                "color": "#8c8c8c",
+                                "size": "xs",
+                                "flex": 5,
+                                "text": article[0][0]
+                              }
+                            ],
+                            "paddingAll": "10px"
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "box",
+                            "layout": "baseline",
+                            "spacing": "sm",
+                            "contents": [
+                              {
+                                "type": "text",
+                                "text": "2. ",
+                                "margin": "none",
+                                "size": "xs",
+                                "flex": 0
+                              },
+                              {
+                                "type": "text",
+                                "text": article[1][0],
+                                "wrap": True,
+                                "color": "#8c8c8c",
+                                "size": "xs",
+                                "flex": 5
+                              }
+                            ],
+                            "paddingAll": "10px"
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "box",
+                            "layout": "baseline",
+                            "spacing": "sm",
+                            "contents": [
+                              {
+                                "type": "text",
+                                "text": "3. ",
+                                "margin": "none",
+                                "size": "xs",
+                                "flex": 0
+                              },
+                              {
+                                "type": "text",
+                                "text": article[2][0],
+                                "wrap": True,
+                                "color": "#8c8c8c",
+                                "size": "xs",
+                                "flex": 5
+                              }
+                            ],
+                            "flex": 5,
+                            "paddingAll": "10px"
+                          }
+                        ]
+                      }
+                    ],
+                    "spacing": "sm",
+                    "paddingAll": "10px"
+                  }
+                },
+                {
+                  "type": "bubble",
+                  "size": "mega",
+                  "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "Listening",
+                        "weight": "bold",
+                        "size": "sm",
+                        "wrap": True
+                      },
+                      {
                         "type": "box",
                         "layout": "vertical",
                         "contents": [
-                        {
-                            "type": "text",
-                            "text": "Listening",
-                            "weight": "bold",
-                            "size": "sm",
-                            "wrap": True
-                        },
-                        {
+                          {
                             "type": "box",
-                            "layout": "vertical",
+                            "layout": "baseline",
+                            "spacing": "sm",
                             "contents": [
-                            {
-                                "type": "box",
-                                "layout": "baseline",
-                                "spacing": "sm",
-                                "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "1. ",
-                                    "margin": "none",
-                                    "size": "xs",
-                                    "flex": 0
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
-                                    "wrap": True,
-                                    "color": "#8c8c8c",
-                                    "size": "xs",
-                                    "flex": 5
-                                }
-                                ]
-                            },
-                            {
-                                "type": "separator",
-                                "margin": "10px"
-                            },
-                            {
-                                "type": "box",
-                                "layout": "baseline",
-                                "spacing": "sm",
-                                "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "2. ",
-                                    "margin": "none",
-                                    "size": "xs",
-                                    "flex": 0
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
-                                    "wrap": True,
-                                    "color": "#8c8c8c",
-                                    "size": "xs",
-                                    "flex": 5
-                                }
-                                ],
-                                "offsetTop": "10px"
-                            },
-                            {
-                                "type": "separator",
-                                "margin": "10px"
-                            },
-                            {
-                                "type": "box",
-                                "layout": "baseline",
-                                "spacing": "sm",
-                                "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "3. ",
-                                    "margin": "none",
-                                    "size": "xs",
-                                    "flex": 0
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
-                                    "wrap": True,
-                                    "color": "#8c8c8c",
-                                    "size": "xs",
-                                    "flex": 5
-                                }
-                                ],
-                                "offsetTop": "10px"
-                            }
-                            ]
-                        }
-                        ],
-                        "spacing": "sm",
-                        "paddingAll": "13px"
-                    }
-                    },
-                    {
-                    "type": "bubble",
-                    "size": "micro",
-                    "body": {
+                              {
+                                "type": "text",
+                                "text": "1. ",
+                                "margin": "none",
+                                "size": "xs",
+                                "flex": 0
+                              },
+                              {
+                                "type": "text",
+                                "wrap": True,
+                                "color": "#8c8c8c",
+                                "size": "xs",
+                                "flex": 5,
+                                "text": article[0][1]
+                              }
+                            ],
+                            "paddingAll": "10px"
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "box",
+                            "layout": "baseline",
+                            "spacing": "sm",
+                            "contents": [
+                              {
+                                "type": "text",
+                                "text": "2. ",
+                                "margin": "none",
+                                "size": "xs",
+                                "flex": 0
+                              },
+                              {
+                                "type": "text",
+                                "text": article[1][1],
+                                "wrap": True,
+                                "color": "#8c8c8c",
+                                "size": "xs",
+                                "flex": 5
+                              }
+                            ],
+                            "paddingAll": "10px"
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "box",
+                            "layout": "baseline",
+                            "spacing": "sm",
+                            "contents": [
+                              {
+                                "type": "text",
+                                "text": "3. ",
+                                "margin": "none",
+                                "size": "xs",
+                                "flex": 0
+                              },
+                              {
+                                "type": "text",
+                                "text": article[2][1],
+                                "wrap": True,
+                                "color": "#8c8c8c",
+                                "size": "xs",
+                                "flex": 5
+                              }
+                            ],
+                            "flex": 5,
+                            "paddingAll": "10px"
+                          }
+                        ]
+                      }
+                    ],
+                    "spacing": "sm",
+                    "paddingAll": "10px"
+                  }
+                },
+                {
+                  "type": "bubble",
+                  "size": "mega",
+                  "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "Speaking",
+                        "weight": "bold",
+                        "size": "sm",
+                        "wrap": True
+                      },
+                      {
                         "type": "box",
                         "layout": "vertical",
                         "contents": [
-                        {
-                            "type": "text",
-                            "text": "Speaking",
-                            "weight": "bold",
-                            "size": "sm",
-                            "wrap": True
-                        },
-                        {
+                          {
                             "type": "box",
-                            "layout": "vertical",
+                            "layout": "baseline",
+                            "spacing": "sm",
                             "contents": [
-                            {
-                                "type": "box",
-                                "layout": "baseline",
-                                "spacing": "sm",
-                                "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "1. ",
-                                    "margin": "none",
-                                    "size": "xs",
-                                    "flex": 0
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
-                                    "wrap": True,
-                                    "color": "#8c8c8c",
-                                    "size": "xs",
-                                    "flex": 5
-                                }
-                                ]
-                            },
-                            {
-                                "type": "separator",
-                                "margin": "10px"
-                            },
-                            {
-                                "type": "box",
-                                "layout": "baseline",
-                                "spacing": "sm",
-                                "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "2. ",
-                                    "margin": "none",
-                                    "size": "xs",
-                                    "flex": 0
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
-                                    "wrap": True,
-                                    "color": "#8c8c8c",
-                                    "size": "xs",
-                                    "flex": 5
-                                }
-                                ],
-                                "offsetTop": "10px"
-                            },
-                            {
-                                "type": "separator",
-                                "margin": "10px"
-                            },
-                            {
-                                "type": "box",
-                                "layout": "baseline",
-                                "spacing": "sm",
-                                "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "3. ",
-                                    "margin": "none",
-                                    "size": "xs",
-                                    "flex": 0
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
-                                    "wrap": True,
-                                    "color": "#8c8c8c",
-                                    "size": "xs",
-                                    "flex": 5
-                                }
-                                ],
-                                "offsetTop": "10px"
-                            }
-                            ]
-                        }
-                        ],
-                        "spacing": "sm",
-                        "paddingAll": "13px"
-                    }
-                    },
-                    {
-                    "type": "bubble",
-                    "size": "micro",
-                    "body": {
+                              {
+                                "type": "text",
+                                "text": "1. ",
+                                "margin": "none",
+                                "size": "xs",
+                                "flex": 0
+                              },
+                              {
+                                "type": "text",
+                                "wrap": True,
+                                "color": "#8c8c8c",
+                                "size": "xs",
+                                "flex": 5,
+                                "text": article[0][2]
+                              }
+                            ],
+                            "paddingAll": "10px"
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "box",
+                            "layout": "baseline",
+                            "spacing": "sm",
+                            "contents": [
+                              {
+                                "type": "text",
+                                "text": "2. ",
+                                "margin": "none",
+                                "size": "xs",
+                                "flex": 0
+                              },
+                              {
+                                "type": "text",
+                                "text": article[1][2],
+                                "wrap": True,
+                                "color": "#8c8c8c",
+                                "size": "xs",
+                                "flex": 5
+                              }
+                            ],
+                            "paddingAll": "10px"
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "box",
+                            "layout": "baseline",
+                            "spacing": "sm",
+                            "contents": [
+                              {
+                                "type": "text",
+                                "text": "3. ",
+                                "margin": "none",
+                                "size": "xs",
+                                "flex": 0
+                              },
+                              {
+                                "type": "text",
+                                "text": article[2][2],
+                                "wrap": True,
+                                "color": "#8c8c8c",
+                                "size": "xs",
+                                "flex": 5
+                              }
+                            ],
+                            "flex": 5,
+                            "paddingAll": "10px"
+                          }
+                        ]
+                      }
+                    ],
+                    "spacing": "sm",
+                    "paddingAll": "10px"
+                  }
+                },
+                {
+                  "type": "bubble",
+                  "size": "mega",
+                  "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "Writing",
+                        "weight": "bold",
+                        "size": "sm",
+                        "wrap": True
+                      },
+                      {
                         "type": "box",
                         "layout": "vertical",
                         "contents": [
-                        {
-                            "type": "text",
-                            "text": "Writing",
-                            "weight": "bold",
-                            "size": "sm",
-                            "wrap": True
-                        },
-                        {
+                          {
                             "type": "box",
-                            "layout": "vertical",
+                            "layout": "baseline",
+                            "spacing": "sm",
                             "contents": [
-                            {
-                                "type": "box",
-                                "layout": "baseline",
-                                "spacing": "sm",
-                                "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "1. ",
-                                    "margin": "none",
-                                    "size": "xs",
-                                    "flex": 0
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
-                                    "wrap": True,
-                                    "color": "#8c8c8c",
-                                    "size": "xs",
-                                    "flex": 5
-                                }
-                                ]
-                            },
-                            {
-                                "type": "separator",
-                                "margin": "10px"
-                            },
-                            {
-                                "type": "box",
-                                "layout": "baseline",
-                                "spacing": "sm",
-                                "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "2. ",
-                                    "margin": "none",
-                                    "size": "xs",
-                                    "flex": 0
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
-                                    "wrap": True,
-                                    "color": "#8c8c8c",
-                                    "size": "xs",
-                                    "flex": 5
-                                }
-                                ],
-                                "offsetTop": "10px"
-                            },
-                            {
-                                "type": "separator",
-                                "margin": "10px"
-                            },
-                            {
-                                "type": "box",
-                                "layout": "baseline",
-                                "spacing": "sm",
-                                "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "3. ",
-                                    "margin": "none",
-                                    "size": "xs",
-                                    "flex": 0
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "獨立衝刺班寫作老師教我們用wordbank想點很有用我自己平時也會看高分同學的範文在看範文時可以先讀題在分鐘內想一想如果是自己會怎麼寫再去看高分文章效果會比較好整合關鍵是在聽力前面閱讀部分可以把個重點快速抄下不須抄太多聽力部分要注意聽盡量多抄平時要把轉折詞以及首尾段的寫法練熟考試時才可以花更多時間在內容的充實上",
-                                    "wrap": True,
-                                    "color": "#8c8c8c",
-                                    "size": "xs",
-                                    "flex": 5
-                                }
-                                ],
-                                "offsetTop": "10px"
-                            }
-                            ]
-                        }
-                        ],
-                        "spacing": "sm",
-                        "paddingAll": "13px"
-                    }
-                    }
-                ]
+                              {
+                                "type": "text",
+                                "text": "1. ",
+                                "margin": "none",
+                                "size": "xs",
+                                "flex": 0
+                              },
+                              {
+                                "type": "text",
+                                "wrap": True,
+                                "color": "#8c8c8c",
+                                "size": "xs",
+                                "flex": 5,
+                                "text": article[0][3]
+                              }
+                            ],
+                            "paddingAll": "10px"
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "box",
+                            "layout": "baseline",
+                            "spacing": "sm",
+                            "contents": [
+                              {
+                                "type": "text",
+                                "text": "2. ",
+                                "margin": "none",
+                                "size": "xs",
+                                "flex": 0
+                              },
+                              {
+                                "type": "text",
+                                "text": article[1][3],
+                                "wrap": True,
+                                "color": "#8c8c8c",
+                                "size": "xs",
+                                "flex": 5
+                              }
+                            ],
+                            "paddingAll": "10px"
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "box",
+                            "layout": "baseline",
+                            "spacing": "sm",
+                            "contents": [
+                              {
+                                "type": "text",
+                                "text": "3. ",
+                                "margin": "none",
+                                "size": "xs",
+                                "flex": 0
+                              },
+                              {
+                                "type": "text",
+                                "text": article[2][3],
+                                "wrap": True,
+                                "color": "#8c8c8c",
+                                "size": "xs",
+                                "flex": 5
+                              }
+                            ],
+                            "flex": 5,
+                            "paddingAll": "10px"
+                          }
+                        ]
+                      }
+                    ],
+                    "spacing": "sm",
+                    "paddingAll": "10px"
+                  }
                 }
-        
+              ]
+            }
         ),
         line_bot_api.reply_message(event.reply_token, flex_message)
     
