@@ -457,14 +457,14 @@ def typebutton(event):
 #def getcontent(result):
 
 #subjectmessage
-def subjectmessage(event):
+def subjectmessage(event,result):
     #getcontent(result) -> 
     #1: ['reading','listening','speaking','writing]
     #2: ...
     #[ [#1], [#2], [#3] ]
     #article = getcontent(result)
     article = [ ['11','22','33','44'], ['11','22','33','44'],['11','22','33','44']]
-
+    print(result)
     try:
         flex_message = FlexSendMessage(
         alt_text = 'flex',

@@ -119,7 +119,7 @@ def callback(request):
                 elif event.postback.data[0:1] == "C":
                     artype = event.postback.data[2:]
                     func.storevalue("type",artype,result)
-                    func.subjectmessage(event)
+                    func.subjectmessage(event,result)
                 
                 
         return HttpResponse()
