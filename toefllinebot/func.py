@@ -1,10 +1,6 @@
-from django.shortcuts import render
 
-# Create your views here.
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
-from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
- 
+import pandas as pd
 from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import (
@@ -454,7 +450,88 @@ def typebutton(event):
 #subjectbutton
 
 #get content from csv file function
-#def getcontent(result):
+
+def ifelse2(condition,yes,no):
+    if condition:
+        return yes
+    else:
+        return no
+test = pd.read_csv('static/test.csv')
+def getcontent(result):
+    
+    print(test.columns)
+    #print(test['goal'])
+
+
+    
+    '''if result['background'].split('/')[0]=='' and result['background'].split('/')[1]=='' and result['background'].split('/')[2]=='':
+        haveb = 0
+    else:
+        haveb = 1
+        tb = int(result['background'].split('/')[0])
+        sb = int(result['background'].split('/')[1])
+        jb = int(result['background'].split('/')[2])'''
+        
+    goal = int(result['goal'])
+    artype = ifelse2(result['type']=='cram',1,0)
+
+    #type => 
+    #1. find totally same goal
+    #if enough: stop
+    #elif not enough: find+1
+    #elif not enough: 
+    #print(test.index[test['tutoring'] == artype].tolist())
+    artypeidx = test.index[test['tutoring'] == artype].tolist()
+
+    #符合條件的id先存到articleid裡
+    articleid = []
+    article = []
+    '''while(len(article)<3):'''
+
+
+
+    #index of reviews' goal == user's goal
+    #[i for i in artypeidx if test['goal'][i]==goal]
+    #if goal+5>120:
+
+    #else goal+5
+    ii = 1
+    artypeidx2 = artypeidx
+    while(len(articleid)<3):
+        #print("ii:",ii)
+        goalrange = [x for x in range(goal,goal+ii)]
+        for i in artypeidx2:
+            if test['goal'][i] in goalrange:
+                articleid.append(i)
+                if len(articleid)==3:
+                    break
+                artypeidx2.remove(i)
+        ii+=1
+
+        if ii==5:
+            jj=1
+            goalrange1 = [x for x in range(goal-jj,goal)]
+            for i in artypeidx2: 
+                if test['goal'][i] in goalrange1:
+                    articleid.append(i)
+                    if len(articleid)==3:
+                        break
+                    artypeidx2.remove(i)  
+            jj+=1
+            if jj==3:
+                break
+    #print(articleid)
+    #print("-----------")
+    
+    #get reviews:
+    #get total toefl score:
+    totalscore = []
+    for i in articleid:
+        ar = [str(test[j][i]) for j in ['rSummary', 'lSummary', 'sSummary', 'wSummary','goal']]
+        article.append(ar)
+    return article
+#print(len(getcontent({'background':"900/14/90",'goal':'100','type':'cram'})))
+
 
 #subjectmessage
 def subjectmessage(event,result):
@@ -462,9 +539,10 @@ def subjectmessage(event,result):
     #1: ['reading','listening','speaking','writing]
     #2: ...
     #[ [#1], [#2], [#3] ]
-    #article = getcontent(result)
-    article = [ ['11','22','33','44'], ['11','22','33','44'],['11','22','33','44']]
-    print(result)
+    article = getcontent(result)
+    #print(type(article[0][4]))
+    #article = [ ['11','22','33','44'], ['11','22','33','44'],['11','22','33','44']]
+    #print(result)
     try:
         flex_message = FlexSendMessage(
         alt_text = 'flex',
@@ -508,7 +586,7 @@ def subjectmessage(event,result):
                                 "color": "#8c8c8c",
                                 "size": "xs",
                                 "flex": 5,
-                                "text": article[0][0]
+                                "text": article[0][0] + '\n\n' + 'TOTAL: '+ article[0][4]
                               }
                             ],
                             "paddingAll": "10px"
@@ -530,7 +608,7 @@ def subjectmessage(event,result):
                               },
                               {
                                 "type": "text",
-                                "text": article[1][0],
+                                "text": article[1][0] + '\n\n' + 'TOTAL: '+ article[1][4],
                                 "wrap": True,
                                 "color": "#8c8c8c",
                                 "size": "xs",
@@ -556,7 +634,7 @@ def subjectmessage(event,result):
                               },
                               {
                                 "type": "text",
-                                "text": article[2][0],
+                                "text": article[2][0] + '\n\n' + 'TOTAL: '+ article[2][4],
                                 "wrap": True,
                                 "color": "#8c8c8c",
                                 "size": "xs",
@@ -609,7 +687,7 @@ def subjectmessage(event,result):
                                 "color": "#8c8c8c",
                                 "size": "xs",
                                 "flex": 5,
-                                "text": article[0][1]
+                                "text": article[0][1] +  '\n\n' + 'TOTAL: '+ article[0][4]
                               }
                             ],
                             "paddingAll": "10px"
@@ -631,7 +709,7 @@ def subjectmessage(event,result):
                               },
                               {
                                 "type": "text",
-                                "text": article[1][1],
+                                "text": article[1][1] + '\n\n' + 'TOTAL: '+ article[1][4],
                                 "wrap": True,
                                 "color": "#8c8c8c",
                                 "size": "xs",
@@ -657,7 +735,7 @@ def subjectmessage(event,result):
                               },
                               {
                                 "type": "text",
-                                "text": article[2][1],
+                                "text": article[2][1] + '\n\n' + 'TOTAL: '+ article[2][4],
                                 "wrap": True,
                                 "color": "#8c8c8c",
                                 "size": "xs",
@@ -710,7 +788,7 @@ def subjectmessage(event,result):
                                 "color": "#8c8c8c",
                                 "size": "xs",
                                 "flex": 5,
-                                "text": article[0][2]
+                                "text": article[0][2] + '\n\n' + 'TOTAL: '+ article[0][4]
                               }
                             ],
                             "paddingAll": "10px"
@@ -732,7 +810,7 @@ def subjectmessage(event,result):
                               },
                               {
                                 "type": "text",
-                                "text": article[1][2],
+                                "text": article[1][2] + '\n\n' + 'TOTAL: '+ article[1][4],
                                 "wrap": True,
                                 "color": "#8c8c8c",
                                 "size": "xs",
@@ -758,7 +836,7 @@ def subjectmessage(event,result):
                               },
                               {
                                 "type": "text",
-                                "text": article[2][2],
+                                "text": article[2][2] + '\n\n' + 'TOTAL: '+ article[2][4],
                                 "wrap": True,
                                 "color": "#8c8c8c",
                                 "size": "xs",
@@ -811,7 +889,7 @@ def subjectmessage(event,result):
                                 "color": "#8c8c8c",
                                 "size": "xs",
                                 "flex": 5,
-                                "text": article[0][3]
+                                "text": article[0][3] +  '\n\n' + 'TOTAL: '+ article[0][4]
                               }
                             ],
                             "paddingAll": "10px"
@@ -833,7 +911,7 @@ def subjectmessage(event,result):
                               },
                               {
                                 "type": "text",
-                                "text": article[1][3],
+                                "text": article[1][3] + '\n\n' + 'TOTAL: '+ article[1][4],
                                 "wrap": True,
                                 "color": "#8c8c8c",
                                 "size": "xs",
@@ -859,7 +937,7 @@ def subjectmessage(event,result):
                               },
                               {
                                 "type": "text",
-                                "text": article[2][3],
+                                "text": article[2][3] + '\n\n' + 'TOTAL: '+ article[2][4],
                                 "wrap": True,
                                 "color": "#8c8c8c",
                                 "size": "xs",
