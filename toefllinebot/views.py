@@ -48,7 +48,7 @@ def callback(request):
                 #print(event.message.text.split('\n'))
                 if event.message.text == "start":
                     
-                    func.backgroundbutton(event)
+                    func.goalmessage(event)
                 elif event.message.text == "stop":
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text='goodbye'))
                 elif event.message.text.split('\n')[0] == "mybackground":

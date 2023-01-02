@@ -492,34 +492,107 @@ def getcontent(result):
 
     #index of reviews' goal == user's goal
     #[i for i in artypeidx if test['goal'][i]==goal]
-    #if goal+5>120:
-
-    #else goal+5
-    ii = 1
     artypeidx2 = artypeidx
-    while(len(articleid)<3):
-        #print("ii:",ii)
-        goalrange = [x for x in range(goal,goal+ii)]
-        for i in artypeidx2:
+    #if goal+5>120:
+    if goal+5>120:
+        ii = 1
+        while(len(articleid)<3):
+          goalrange = [x for x in range(goal,goal+ii)]
+          for i in artypeidx2:
             if test['goal'][i] in goalrange:
                 articleid.append(i)
                 if len(articleid)==3:
                     break
                 artypeidx2.remove(i)
-        ii+=1
-
-        if ii==5:
-            jj=1
-            goalrange1 = [x for x in range(goal-jj,goal)]
-            for i in artypeidx2: 
-                if test['goal'][i] in goalrange1:
+          ii+=1
+          if goal+ii==121:
+              break
+        jj=1
+        while(len(articleid)<3):
+          goalrange1 = [x for x in range(goal-jj,goal)]
+          for i in artypeidx2:
+              if test['goal'][i] in goalrange1:
+                  articleid.append(i)
+                  if len(articleid)==3:
+                      break
+                  artypeidx2.remove(i)
+              jj+=1     
+    elif goal-3<80:
+      ii = 1
+      while(len(articleid)<3):
+          goalrange = [x for x in range(goal,goal+ii)]
+          for i in artypeidx2:
+              if test['goal'][i] in goalrange:
                     articleid.append(i)
                     if len(articleid)==3:
                         break
-                    artypeidx2.remove(i)  
-            jj+=1
-            if jj==3:
-                break
+                    artypeidx2.remove(i)
+          ii+=1    
+    else:
+        
+        a = 1
+        jj=1
+        while(len(articleid)<3):
+          #print("ii:",ii)
+          if a==5:
+              
+              
+              goalrange1 = [x for x in range(goal-jj,goal)]
+              print(goalrange1)
+              
+              for i in artypeidx2: 
+                  if test['goal'][i] in goalrange1:
+                      articleid.append(i)
+                      print(articleid)
+                      if len(articleid)==3:
+                          break
+                      artypeidx2.remove(i)  
+              jj+=1
+              if jj==3:
+                  print("werwer")
+                  break
+          else:
+
+            goalrange = [x for x in range(goal,goal+a)]
+            print(goalrange)
+            for i in artypeidx2:
+                if test['goal'][i] in goalrange:
+                    articleid.append(i)
+                    if len(articleid)==3:
+                          break
+                    artypeidx2.remove(i)
+            a+=1  
+          
+          
+        
+        if len(articleid)<3:
+          kk = a
+          while(len(articleid)<3):
+              if goal+kk == 121:
+                  break
+              goalrange3 = [x for x in range(goal, goal+kk)]
+              for i in artypeidx2: 
+                  if test['goal'][i] in goalrange3:
+                      articleid.append(i)
+                      if len(articleid)==3:
+                          break
+                      artypeidx2.remove(i)
+              kk+=1
+        
+        if len(articleid)<3:
+          ll = jj
+          while(len(articleid)<3):
+              goalrange3 = [x for x in range(goal-ll, goal)]
+              for i in artypeidx2: 
+                  if test['goal'][i] in goalrange3:
+                      articleid.append(i)
+                      if len(articleid)==3:
+                          break
+                      artypeidx2.remove(i)
+              ll+=1
+        
+
+
     #print(articleid)
     #print("-----------")
     
