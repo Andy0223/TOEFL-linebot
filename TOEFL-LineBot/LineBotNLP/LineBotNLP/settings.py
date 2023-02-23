@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 
 #Line_CHANNEL
-LINE_CHANNEL_ACCESS_TOKEN = 'nLEOQuG/hNntJdygm5W6KZpMgqUpAUlgAU6CTce9djIdoHkTiWiurg8MlYpV00rM56obxmv42vMweMSV08M9Rpl+T57KeFKYSYJdFDvMHC6yrE0nkY1aBsAguLXwNwzWhC+JZmdyEmPEYli6qMKC0gdB04t89/1O/w1cDnyilFU='
-LINE_CHANNEL_SECRET = 'eac98e374352ec70f469c97a2a08ddb1'
+LINE_CHANNEL_ACCESS_TOKEN = 'LINE_CHANNEL_ACCESS_TOKEN'
+LINE_CHANNEL_SECRET = 'LINE_CHANNEL_SECRET'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
